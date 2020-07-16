@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { floorArr, floorArr1 } from '../Constant';
+import { floorArr } from '../Constant';
 
 
 class MainScreen extends React.Component {
@@ -9,46 +9,37 @@ class MainScreen extends React.Component {
         super(props);
         this.state = {
             data: floorArr,
-            data1: floorArr1,
             downArr: [],
-            upArr: []
+            upArr: [],
+            activeIndex: 7
         };
     }
 
-    sortData = (data) => {
-        data.sort(function (a, b) {
-            if (a.button < b.button) { return -1; }
-            if (a.button > b.button) { return 1; }
-            return 0;
-        })
-    }
-
     onPress = (type, item, index) => {
-        const { downArr } = this.state
+        const { downArr, upArr } = this.state
 
         if (type === 'Down') {
             const newObj = {
                 name: item.name,
-                button: 'Down',
-                index: index,
-                backgroundColor: 'green'
             }
             downArr.push(newObj)
         } else {
             const newObj = {
                 name: item.name,
-                button: 'Up',
-                index: index,
-                backgroundColor: 'green'
             }
-            downArr.push(newObj)
+            upArr.push(newObj)
         }
     }
 
     renderFloor = ({ item, index }) => {
         return (
             <View key={index} style={style.cardView}>
-                <View style={[style.elevatorView, { backgroundColor: item.backgroundColor ? item.backgroundColor : '#FFFFFF' }]} />
+                {
+                    item.active ?
+                        <View style={style.elevatorView} />
+                        :
+                        null
+                }
                 <TouchableOpacity style={style.floorView} onPress={() => this.onPress('Down', item, index)}>
                     <MaterialCommunityIcons name="arrow-down-bold" color={"black"} size={30} />
                     <Text style={style.floorText}>{`Lift floor ${item.name}`}</Text>
@@ -64,28 +55,52 @@ class MainScreen extends React.Component {
     getUniqueListBy = (arr, key) => {
         return [...new Map(arr.map(item => [item[key], item])).values()]
     }
-    onCall = (index, item) => {
-        const { data } = this.state;
-        const newObj = {
-            name: item.name,
-            button: item.button,
-            index: index,
-            backgroundColor: 'green'
-        }
-        data.push(newObj)
-        const arr1 = this.getUniqueListBy(data, 'name')
-        this.setState({ data: arr1 })
-    }
+
 
     onSubmit = () => {
-        const { downArr } = this.state;
-        const newDownArr = this.sortData(downArr)
-        this.setState({ downArr: newDownArr })
+        const { downArr, upArr, data } = this.state;
+        const newDownArr = downArr.sort((a, b) => a.name - b.name)
+        const newUparr = upArr.sort((a, b) => a.name - b.name)
 
-        downArr.map((item, index) => {
-            const repeater = setInterval(() => { this.onCall(index, item) }, 1000)
-            setTimeout(() => { clearInterval(repeater) }, 5000);
+        let orderList = []
+
+
+        newDownArr.forEach((el, index) => {
+            orderList.push(el)
+            const newObj = {
+                name: el.name,
+                active: true
+            }
+            data.push(newObj)
+            const arr1 = this.getUniqueListBy(data, 'name')
+            this.setState({ data: arr1 })
+        });
+
+        newUparr.forEach((el, index) => {
+            orderList.push(el)
+            const newObj = {
+                name: el.name,
+                active: true
+            }
+            data.push(newObj)
+            const arr1 = this.getUniqueListBy(data, 'name')
+            this.setState({ data: arr1 })
         })
+
+
+        const arr = this.getUniqueListBy(data, 'name')
+
+        this.setState({ downArr: [], upArr: [], data: arr })
+
+        let orderOfExecution = '';
+
+        orderList.forEach((el) => {
+            orderOfExecution += `${el.name} => `
+        })
+
+        this.props.navigation.navigate("ExecView", { exec: orderOfExecution })
+
+
     }
 
     render() {

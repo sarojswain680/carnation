@@ -1,73 +1,44 @@
 export const floorArr = [
     {
         name: 1,
-        button: 'Down'
+        button: 'Down',
+        active: false
     },
     {
         name: 2,
-        button: 'Down'
+        button: 'Down',
+        active: false
 
     },
     {
         name: 3,
-        button: 'Down'
+        button: 'Down',
+        active: false
 
     },
     {
         name: 4,
-        button: 'Down'
+        button: 'Down',
+        active: false
 
     },
     {
         name: 5,
-        button: 'Down'
+        button: 'Down',
+        active: false
 
     },
     {
         name: 6,
-        button: 'Down'
+        button: 'Down',
+        active: false
 
     },
     {
         name: 7,
-        button: 'Down'
+        button: 'Down',
+        active: true
 
     },
 ]
 
-export const floorArr1 = [
-    {
-        name: 1,
-        button: 'Up'
-    },
-    {
-        name: 2,
-        button: 'Up'
-
-    },
-    {
-        name: 3,
-        button: 'Up'
-
-    },
-    {
-        name: 4,
-        button: 'Up'
-
-    },
-    {
-        name: 5,
-        button: 'Up'
-
-    },
-    {
-        name: 6,
-        button: 'Up'
-
-    },
-    {
-        name: 7,
-        button: 'Up'
-
-    },
-]

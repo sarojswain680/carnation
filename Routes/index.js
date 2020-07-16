@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import MainView from '../App/Component/main'
+import MainView from '../App/Component/main';
+import ExecView from '../App/Component/exec';
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -20,6 +21,11 @@ class AppRouter extends Component {
                     <Stack.Screen
                         name="MainView"
                         component={MainView}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="ExecView"
+                        component={ExecView}
                         options={{ headerShown: false }}
                     />
                 </Stack.Navigator>
